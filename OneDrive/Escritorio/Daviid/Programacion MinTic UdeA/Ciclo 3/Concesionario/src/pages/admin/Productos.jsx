@@ -17,14 +17,7 @@ const Productos = () => {
     }
 
     return (
-        <form className='flex flex-col'>
-            <h2>Formulario de creacion de productos</h2>
-            <input onChange={(e)=>{setNombreProducto(e.target.value)}} type="text" placeholder='Nombre del Producto'  />
-            <input onChange={(e)=>{console.log('Marca: ', e.target.value)}} type="text" placeholder='Marca del Producto' />
-            <input onChange={(e)=>{console.log('Modelo: ', e.target.value)}} type="text" placeholder='Modelo del producto' />
-            <button type='button' onClick={enviarDatosAlBackEnd} className='bg-indigo-500 text-white'>Enviar Datos</button>
-
-        </form>
+        <div></div>
     )
 }
 
