@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -69,8 +69,8 @@ const Productos = () => {
           <TablaProductos listaVehiculos={productos} />
         ) : (
           <FormularioCreacionProductos
-            funcionParaMostrarLaTabla={setMostrarTabla}
-            funcionParaAgregarUnVehiculo={setProductos}
+            setMostrarTabla={setMostrarTabla}
+            setProductos={setProductos}
             listaVehiculos={productos}
           />
         )}
@@ -122,61 +122,51 @@ const TablaProductos = ({ listaVehiculos }) => {
 };
 
 const FormularioCreacionProductos = ({
-  funcionParaMostrarLaTabla,
+  setMostrarTabla,
   listaVehiculos,
-  funcionParaAgregarUnVehiculo,
+  setProductos,
 }) => {
-  const [nombre, setNombre] = useState();
-  const [marca, setMarca] = useState();
-  const [modelo, setModelo] = useState();
+  const form = useRef(null);
 
-  const enviarAlBackend = () => {
-    console.log("nombre", nombre, "marca", marca, "modelo", modelo);
-    toast.success("Vehiculo guardo con exito", {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    funcionParaMostrarLaTabla(true);
-    funcionParaAgregarUnVehiculo([
-      ...listaVehiculos,
-      { nombre: nombre, marca: marca, modelo: modelo },
-    ]);
-  };
+  const submitForm = (e) => {
+    e.preventDefault();
+    const fd = new FormData((form.current));
+    const nuevoVehiculo = { };
+    fd.forEach((value, key )=>{
+      nuevoVehiculo[key]=value;
+    })
+    setMostrarTabla(true)
+    setProductos([...listaVehiculos, nuevoVehiculo])
+    
+    toast.success("Vehiculo Agregado con exito")
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h2 className="text-2xl font-extrabold text-gray-600">
         Crear Nuevo Producto
       </h2>
-      <form className="flex flex-col">
+      <form ref={form} onSubmit={submitForm} className="flex flex-col">
         <label className="flex flex-col" htmlFor="nombre">
           Marca del vehiculo
           <input
-            onChange={(e) => {
-              setNombre(e.target.value);
-            }}
-            value={nombre}
+
             name="nombre"
             type="text"
             placeholder="Kawasaki Ninja 400"
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2 "
+            required
           />
         </label>
         <label className="flex flex-col" htmlFor="marca">
           Marcar del Vehiculo
           <select
-            onChange={(e) => {
-              setMarca(e.target.value);
-            }}
-            value={marca}
             name="marca"
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2 "
+            required
+            defaultValue={0}
           >
-            <option disabled value="">
+            <option disabled value={0}>
               Seleccione una opcion
             </option>
             <option>KAWASAKI</option>
@@ -190,24 +180,19 @@ const FormularioCreacionProductos = ({
         <label className="flex flex-col" htmlFor="modelo">
           Modelo del vehiculo
           <input
-            onChange={(e) => {
-              setModelo(e.target.value);
-            }}
-            value={modelo}
+
             name="modelo"
             type="number"
             min="1992"
             max="2022"
             placeholder="2022"
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2 "
+            required
           />
         </label>
 
         <button
-          onClick={() => {
-            enviarAlBackend();
-          }}
-          type="button"
+          type='submit' 
           className="bg-green-400 col-span-2 p-2 rounded-full shadow-lg hover:bg-green-600 text-white font-semibold"
         >
           Guardar producto

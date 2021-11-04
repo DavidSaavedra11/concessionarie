@@ -4,7 +4,7 @@ import Logo from 'media/logo-moto2.png';
 
 const AuthLayout = ({ children }) => {
     return (
-        <div className='bg-gray-200 min-h-screen flex flex-col items-center justify-center bg-gray-50 py-2 px-4 sm:px-6 lg:px-8'>
+        <div className='bg-gray-200 min-h-screen flex flex-col items-center justify-center py-2 px-4 sm:px-6 lg:px-8'>
             AuthLayout
             <div className='w-full flex items-start'>
                 <Link to='/'>
