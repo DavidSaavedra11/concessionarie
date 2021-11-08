@@ -130,11 +130,14 @@ const FormularioCreacionProductos = ({
 
   const submitForm = (e) => {
     e.preventDefault();
-    const fd = new FormData((form.current));
-    const nuevoVehiculo = { };
+    const fd = new FormData((form.current));// guarda los valores ingresados en los inputs
+
+    const nuevoVehiculo = { }; 
     fd.forEach((value, key )=>{
       nuevoVehiculo[key]=value;
     })
+
+
     setMostrarTabla(true)
     setProductos([...listaVehiculos, nuevoVehiculo])
     

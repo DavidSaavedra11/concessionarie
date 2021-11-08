@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Logo from 'media/logo-moto2.png';
+import ImagenLogo from 'components/ImagenLogo';
 
 const AuthLayout = ({ children }) => {
     return (
@@ -12,7 +12,7 @@ const AuthLayout = ({ children }) => {
                 </Link>
             </div>
             <div className='max-w-md w-full'>
-                <img className='mx-auto h-52 w-auto' src={Logo} alt="LogoAqui" />
+                <ImagenLogo/>
                 {children}
             </div>
         </div>
