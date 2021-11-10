@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { useDarkMode } from 'context/darkMode';
 import TriggerDarkMode from './TriggerDarkMode';
 
 

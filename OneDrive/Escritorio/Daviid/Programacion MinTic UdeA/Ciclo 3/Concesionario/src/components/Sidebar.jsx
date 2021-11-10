@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import ImagenLogo from "components/ImagenLogo";
-import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import useActiveRoute from "hooks/useActiveRoute";
 
 const Sidebar = () => {

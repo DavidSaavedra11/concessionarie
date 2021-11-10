@@ -1,6 +1,6 @@
 import Sidebar from 'components/Sidebar';
 import SIdebarResponsive from 'components/SIdebarResponsive';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 const PrivateLayout = ({ children }) => {
     return (

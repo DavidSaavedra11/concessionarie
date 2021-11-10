@@ -8,7 +8,7 @@ import Productos from 'pages/admin/Productos';
 import Login from 'pages/Login';
 import Registro from 'pages/Registro';
 import Index from 'pages/Index';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import 'styles/styles.css';
 import {DarkModeContext} from 'context/darkMode'
 
