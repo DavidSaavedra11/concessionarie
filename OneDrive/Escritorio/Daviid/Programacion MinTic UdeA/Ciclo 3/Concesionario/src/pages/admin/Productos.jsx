@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Dialog, Tooltip } from "@material-ui/core";
 
 const vehiculosBackEnd = [
   {
@@ -95,6 +96,7 @@ const Productos = () => {
 const TablaProductos = ({ listaVehiculos }) => {
   return (
     <div className="flex flex-col items-center justify-center w-full">
+      
       <h2 className="text-2xl font-extrabold text-gray-600">
         Todos los Prodcutos
       </h2>
@@ -120,6 +122,8 @@ const TablaProductos = ({ listaVehiculos }) => {
 
 const FilaProducto = ({ vehiculo }) => {
   const [edit, setEdit] = useState(false);
+  const [openDialogo, setOpenDialogo] = useState(false);
+
   const [infoNuevoProducto, setInfoNuevoProducto] = useState({
     name: vehiculo.nombre,
     marca: vehiculo.marca,
@@ -191,21 +195,61 @@ const FilaProducto = ({ vehiculo }) => {
       <td>
         <div className="flex w-full justify-around">
           {edit ? (
-            <i
-              onClick={() => actualizarProducto()} // AQUI VOYYYY
-              className="fas fa-check-circle text-green-600 hover:text-green-300 hover:bg-black bg-white rounded-lg"
-            />
+            <>
+              <Tooltip title="Confirmar edicion" arrow>
+                <i
+                  onClick={() => actualizarProducto()}
+                  className="fas fa-check-circle text-green-600 hover:text-green-300 hover:bg-black bg-white rounded-lg"
+                />
+              </Tooltip>
+              <Tooltip title="Cancelar edicion" arrow>
+                <i
+                  onClick={() => actualizarProducto()}
+                  className="fas fa-ban text-red-600 hover:text-red-300 hover:bg-black bg-white rounded-lg"
+                />
+              </Tooltip>
+            </>
           ) : (
-            <i
-              onClick={() => setEdit(!edit)}
-              className="fas fa-edit hover:text-yellow-300"
-            ></i>
+            <>
+              <Tooltip title="Editar Producto" arrow>
+                <i
+                  onClick={() => setEdit(!edit)}
+                  className="fas fa-edit hover:text-yellow-300"
+                ></i>
+              </Tooltip>
+              <Tooltip title="Eliminar Producto" arrow>
+                <i
+                  onClick={() => setOpenDialogo(true)}
+                  className="fas fa-trash-alt hover:text-red-400"
+                ></i>
+              </Tooltip>
+            </>
           )}
-          <i
-            onClick={() => eliminarProducto()}
-            className="fas fa-trash-alt hover:text-red-400"
-          ></i>
         </div>
+        <Dialog open={openDialogo}>
+          <div className="p-8 flex flex-col">
+            <h1 className="text-gray-900 text-2xl font-bold">
+              ¿Esta seguro que quiere eliminar el vehiculo?
+            </h1>
+            <div className="flex w-full justify-center my-4">
+              <button
+                onClick={() => {
+                  eliminarProducto();
+                  setOpenDialogo(false);
+                }}
+                className="mx-4 px-4 py-2bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded shadow-xl "
+              >
+                Si
+              </button>
+              <button
+                onClick={() => setOpenDialogo(false)}
+                className="mx-4 px-4 py-2bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded shadow-xl "
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </Dialog>
       </td>
     </tr>
   ); //Aca Usamos la libreria nanoid para asignar un codigo unico a los tr
