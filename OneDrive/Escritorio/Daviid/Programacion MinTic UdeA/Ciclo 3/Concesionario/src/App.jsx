@@ -6,6 +6,7 @@ import Admin from 'pages/admin/Index';
 import Clientes from 'pages/admin/Clientes';
 import Productos from 'pages/admin/Productos';
 import Login from 'pages/Login';
+import Test from "pages/test";
 import Registro from 'pages/Registro';
 import Index from 'pages/Index';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
