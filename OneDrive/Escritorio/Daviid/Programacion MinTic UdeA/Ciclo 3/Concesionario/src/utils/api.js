@@ -1,14 +1,14 @@
 import axios from "axios";
 
 export const obtenerVehiculos = async (successCallback, errorCallback) => {
-  const options = { method: "GET", url: "http://localhost:5000/productos/" };
+  const options = { method: "GET", url: "http://localhost:5000/vehiculos/" };
   await axios.request(options).then(successCallback).catch(errorCallback);
 };
 
 export const crearVehiculo = async (data, successCallback, errorCallback) => {
   const options = {
     method: "POST",
-    url: "http://localhost:5000/productos/",
+    url: "http://localhost:5000/vehiculos/",
     headers: { "Content-Type": "application/json" },
     data,
   };
@@ -18,7 +18,7 @@ export const crearVehiculo = async (data, successCallback, errorCallback) => {
 export const editarVehiculo = async (id, data, successCallback, errorCallback) => {
   const options = {
     method: "PATCH",
-    url: `http://localhost:5000/productos/${id}/`,
+    url: `http://localhost:5000/vehiculos/${id}/`,
     headers: { "Content-Type": "application/json" },
     data,
   };
@@ -28,7 +28,7 @@ export const editarVehiculo = async (id, data, successCallback, errorCallback) =
 export const eliminarVehiculo = async (id, successCallback, errorCallback) => {
   const options = {
     method: "DELETE",
-    url: `http://localhost:5000/productos/${id}/`,
+    url: `http://localhost:5000/vehiculos/${id}/`,
     headers: { "Content-Type": "application/json" },
   };
   await axios.request(options).then(successCallback).catch(errorCallback);
@@ -45,9 +45,9 @@ export const obtenerUsuarios = async (successCallback, errorCallback) => {
 
 export const crearVenta = async (data, successCallback, errorCallback) => {
   const options = {
-    method: 'POST',
-    url: 'http://localhost:5000/ventas',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    url: "http://localhost:5000/ventas",
+    headers: { "Content-Type": "application/json" },
     data,
   };
   await axios.request(options).then(successCallback).catch(errorCallback);

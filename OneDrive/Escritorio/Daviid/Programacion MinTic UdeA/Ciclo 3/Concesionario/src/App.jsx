@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import PrivateLayout from "layouts/PrivateLayout";
-import PublicLayout from 'layouts/PublicLayout';
+import PublicLayout from "layouts/PublicLayout";
 import Index from "pages/Index";
-import Admin from 'pages/admin/Index';
+import Admin from "pages/admin/Index";
 import Productos from "pages/admin/Productos";
-import Login from "pages/Login";
+import Login from "pages/auth/Login";
 import Test from "pages/test";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "styles/styles.css";
-import Registro from "pages/Registro";
-import Clientes from 'pages/admin/Clientes';
+import Registro from "pages/auth/Registro";
 import AuthLayout from "layouts/AuthLayout";
 import { DarkModeContext } from "context/darkMode";
-import Ventas from 'pages/admin/Ventas'
-
-
-
+import Ventas from "pages/admin/Ventas";
 
 function App() {
-const [darkMode, setDarkMode] = useState(false);
-useEffect(() => {
-  console.log('modo dark: ',darkMode)
-}, [darkMode]);
-
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    console.log("modo dark:", darkMode);
+  }, [darkMode]);
 
   return (
-    <div classname="App">
+    <div className="App">
       <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
         <Router>
           <Switch>
@@ -44,7 +39,6 @@ useEffect(() => {
                 </Switch>
               </PrivateLayout>
             </Route>
-
             <Route path={["/login", "/registro"]}>
               <AuthLayout>
                 <Switch>
@@ -57,7 +51,6 @@ useEffect(() => {
                 </Switch>
               </AuthLayout>
             </Route>
-
             <Route path={["/"]}>
               <PublicLayout>
                 <Route path="/">
