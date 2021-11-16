@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { nanoid } from "nanoid";
 import { obtenerUsuarios } from "utils/api";
-import { obtenerProducto } from "utils/api";
+import { obtenerVehiculos } from "utils/api";
 
 const Test = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -10,7 +10,7 @@ const Test = () => {
   const form = useRef(null);
 
   useEffect(() => {
-    obtenerProducto(setVehiculos);
+    obtenerVehiculos(setVehiculos);
     obtenerUsuarios(setUsuarios);
   }, []);
 

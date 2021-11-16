@@ -1,24 +1,36 @@
-import { nanoid } from "nanoid";
 import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { nanoid } from "nanoid";
 import { Dialog, Tooltip } from "@material-ui/core";
-import axios from "axios";
-import { obtenerProducto } from "utils/api";
-//import {obtenerProducto} from 'utils/api'
-
+import {
+  obtenerVehiculos,
+  crearVehiculo,
+  editarVehiculo,
+  eliminarVehiculo,
+} from "utils/api";
+import "react-toastify/dist/ReactToastify.css";
 
 const Productos = () => {
   const [mostrarTabla, setMostrarTabla] = useState(true);
-  const [textBoton, setTextBoton] = useState("Ingresar nuevo producto");
   const [productos, setProductos] = useState([]);
+  const [textBoton, setTextBoton] = useState("Ingresar nuevo producto");
   const [colorBoton, setColorBoton] = useState("indigo");
   const [ejecutarConsulta, setEjecutarConsulta] = useState(true);
 
   // este UseEffect carga las lista de productos en la primera renderizacion
   useEffect(() => {
+    console.log("consulta", ejecutarConsulta);
     if (ejecutarConsulta) {
-      obtenerProducto(setProductos, setEjecutarConsulta);
+      obtenerVehiculos(
+        (response) => {
+          console.log("la respuesta que se recibio fue", response);
+          setProductos(response.data);
+        },
+        (error) => {
+          console.error("Salio un error:", error);
+        }
+      );
+      setEjecutarConsulta(false);
     }
   }, [ejecutarConsulta]);
 
@@ -38,7 +50,7 @@ const Productos = () => {
     }
   }, [mostrarTabla]);
   return (
-    <div className="flex h-full w-full flex-col items-start justify-center p-8">
+    <div className="flex h-full w-full flex-col items-center justify-start p-8">
       <div className="flex flex-col w-full justify-center">
         <h2 className="text-3xl font-extrabold text-gray-600 flex justify-center">
           Pagina de administracion de Productos
@@ -52,30 +64,30 @@ const Productos = () => {
           {textBoton}
         </button>
       </div>
-        {mostrarTabla ? (
-          <TablaProductos
-            listaVehiculos={productos}
-            setEjecutarConsulta={setEjecutarConsulta}
-          />
-        ) : (
-          <FormularioCreacionProductos
-            setMostrarTabla={setMostrarTabla}
-            listaVehiculos={productos}
-            setProductos={setProductos}
-          />
-        )}
-        <ToastContainer
-          position="bottom-center"
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
+      {mostrarTabla ? (
+        <TablaProductos
+          listaVehiculos={productos}
+          setEjecutarConsulta={setEjecutarConsulta}
         />
-      </div>   
+      ) : (
+        <FormularioCreacionProductos
+          setMostrarTabla={setMostrarTabla}
+          listaVehiculos={productos}
+          setProductos={setProductos}
+        />
+      )}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </div>
   );
 };
 
@@ -129,79 +141,70 @@ const TablaProductos = ({ listaVehiculos, setEjecutarConsulta }) => {
         </tbody>
       </table>
     </div>
-    
   );
 };
 
 const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
   const [edit, setEdit] = useState(false);
-  const [openDialogo, setOpenDialogo] = useState(false);
-  const [infoNuevoProducto, setInfoNuevoProducto] = useState({
+  const [openDialog, setOpenDialog] = useState(false);
+  const [infoNuevoVehiculo, setInfoNuevoVehiculo] = useState({
     _id: vehiculo._id,
     nombre: vehiculo.nombre,
     marca: vehiculo.marca,
     modelo: vehiculo.modelo,
   });
 
-  const actualizarProducto = async () => {
+  const actualizarVehiculo = async () => {
     // enviar la informacion al backend
-    const options = {
-      method: "PATCH",
-      url: `http://localhost:5000/productos/${vehiculo._id}/`,
-      headers: { "Content-Type": "application/json" },
-      data: {...infoNuevoProducto},
-    };
-    await axios
-      .request(options)
-      .then(function (response) {
+    await editarVehiculo(
+      vehiculo._id,
+      {
+        nombre: infoNuevoVehiculo.nombre,
+        marca: infoNuevoVehiculo.marca,
+        modelo: infoNuevoVehiculo.modelo,
+      },
+      (response) => {
         console.log(response.data);
-        toast.success("vehiculo modificado con exito");
+        toast.success("Vehículo modificado con éxito");
         setEdit(false);
         setEjecutarConsulta(true);
-      })
-      .catch(function (error) {
-        toast.error("error modificando el vehiculo");
+      },
+      (error) => {
+        toast.error("Error modificando el vehículo");
         console.error(error);
-      });
+      }
+    );
   };
 
-  const eliminarProducto = async () => {
-    const options = {
-      method: "DELETE",
-      url: "http://localhost:5000/productos/eliminar/",
-      headers: { "Content-Type": "application/json" },
-      data: {
-        id: vehiculo._id,
-      },
-    };
-
-    await axios
-      .request(options)
-      .then(function (response) {
+  const deleteVehicle = async () => {
+    await eliminarVehiculo(
+      vehiculo._id,
+      (response) => {
         console.log(response.data);
-        toast.success("vehiculo eliminado con exito");
+        toast.success("vehículo eliminado con éxito");
         setEjecutarConsulta(true);
-      })
-      .catch(function (error) {
+      },
+      (error) => {
         console.error(error);
-        toast.error("error eliminando el producto");
-      });
-    setOpenDialogo(false);
+        toast.error("Error eliminando el vehículo");
+      }
+    );
+    setOpenDialog(false);
   };
 
   return (
     <tr>
       {edit ? (
         <>
-          <td>{infoNuevoProducto._id}</td>
+          <td>{infoNuevoVehiculo._id}</td>
           <td>
             <input
               className="border border-gray-600 text-green-700 font-bold rounded-md p-1 m-0"
               type="text"
-              value={infoNuevoProducto.name}
+              value={infoNuevoVehiculo.nombre}
               onChange={(e) =>
-                setInfoNuevoProducto({
-                  ...infoNuevoProducto,
+                setInfoNuevoVehiculo({
+                  ...infoNuevoVehiculo,
                   nombre: e.target.value,
                 })
               }
@@ -211,10 +214,10 @@ const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
             <input
               className="border border-gray-600 text-green-700 font-bold rounded-md p-1 m-0"
               type="text"
-              value={infoNuevoProducto.marca}
+              value={infoNuevoVehiculo.marca}
               onChange={(e) =>
-                setInfoNuevoProducto({
-                  ...infoNuevoProducto,
+                setInfoNuevoVehiculo({
+                  ...infoNuevoVehiculo,
                   marca: e.target.value,
                 })
               }
@@ -224,10 +227,10 @@ const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
             <input
               className="border border-gray-600 text-green-700 font-bold rounded-md p-1 m-0"
               type="number"
-              value={infoNuevoProducto.modelo}
+              value={infoNuevoVehiculo.modelo}
               onChange={(e) =>
-                setInfoNuevoProducto({
-                  ...infoNuevoProducto,
+                setInfoNuevoVehiculo({
+                  ...infoNuevoVehiculo,
                   modelo: e.target.value,
                 })
               }
@@ -236,8 +239,7 @@ const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
         </>
       ) : (
         <>
-          {
-          }
+          {}
           <td>{vehiculo._id.slice(20)}</td>
           <td>{vehiculo.nombre}</td>
           <td>{vehiculo.marca}</td>
@@ -250,7 +252,7 @@ const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
             <>
               <Tooltip title="Confirmar edicion" arrow>
                 <i
-                  onClick={() => actualizarProducto()}
+                  onClick={() => actualizarVehiculo()}
                   className="fas fa-check-circle text-green-600 hover:text-green-300 hover:bg-black bg-white rounded-lg"
                 />
               </Tooltip>
@@ -272,30 +274,27 @@ const FilaProducto = ({ vehiculo, setEjecutarConsulta }) => {
 
               <Tooltip title="Eliminar Producto" arrow>
                 <i
-                  onClick={() => setOpenDialogo(true)}
+                  onClick={() => setOpenDialog(true)}
                   className="fas fa-trash-alt hover:text-red-400"
                 ></i>
               </Tooltip>
             </>
           )}
         </div>
-        <Dialog open={openDialogo}>
+        <Dialog open={openDialog}>
           <div className="p-8 flex flex-col">
             <h1 className="text-gray-900 text-2xl font-bold">
               ¿Esta seguro que quiere eliminar el vehiculo?
             </h1>
             <div className="flex w-full justify-center my-4">
               <button
-                onClick={
-                  () => eliminarProducto()
-                  //setOpenDialogo(false);
-                }
+                onClick={() => deleteVehicle()}
                 className="mx-4 px-4 py-2bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 border border-green-500 hover:border-transparent rounded shadow-xl "
               >
                 Si
               </button>
               <button
-                onClick={() => setOpenDialogo(false)}
+                onClick={() => setOpenDialog(false)}
                 className="mx-4 px-4 py-2bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 border border-red-500 hover:border-transparent rounded shadow-xl "
               >
                 No
@@ -324,27 +323,21 @@ const FormularioCreacionProductos = ({
       nuevoVehiculo[key] = value;
     });
 
-    const options = {
-      method: "POST",
-      url: "http://localhost:5000/productos/",
-      headers: { "Content-Type": "application/json" },
-      data: {
+    await crearVehiculo(
+      {
         nombre: nuevoVehiculo.nombre,
         marca: nuevoVehiculo.marca,
         modelo: nuevoVehiculo.modelo,
       },
-    };
-
-    await axios
-      .request(options)
-      .then(function (response) {
+      (response) => {
         console.log(response.data);
-        toast.success("Producto Creado");
-      })
-      .catch(function (error) {
+        toast.success("Vehículo agregado con éxito");
+      },
+      (error) => {
         console.error(error);
-        toast.error("Error creando el vehiculo");
-      });
+        toast.error("Error creando un vehículo");
+      }
+    );
     setMostrarTabla(true);
   };
 

@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import AuthLayout from 'layouts/AuthLayout';
+import PrivateLayout from "layouts/PrivateLayout";
 import PublicLayout from 'layouts/PublicLayout';
-import PrivateLayout from 'layouts/PrivateLayout';
+import Index from "pages/Index";
 import Admin from 'pages/admin/Index';
-import Clientes from 'pages/admin/Clientes';
-import Productos from 'pages/admin/Productos';
-import Login from 'pages/Login';
+import Productos from "pages/admin/Productos";
+import Login from "pages/Login";
 import Test from "pages/test";
-import Registro from 'pages/Registro';
-import Index from 'pages/Index';
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import 'styles/styles.css';
-import {DarkModeContext} from 'context/darkMode'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "styles/styles.css";
+import Registro from "pages/Registro";
+import Clientes from 'pages/admin/Clientes';
+import AuthLayout from "layouts/AuthLayout";
+import { DarkModeContext } from "context/darkMode";
+import Ventas from 'pages/admin/Ventas'
+
+
 
 
 function App() {
@@ -22,55 +25,49 @@ useEffect(() => {
 
 
   return (
-    <div classname='App'>
+    <div classname="App">
       <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
         <Router>
           <Switch>
-
-            <Route path={['/admin', '/admin/productos', '/admin/clientes']}>
+            <Route path={["/admin", "/admin/productos", "/admin/ventas"]}>
               <PrivateLayout>
                 <Switch>
-                  <Route path='/admin/productos'>
+                  <Route path="/admin/productos">
                     <Productos />
                   </Route>
-                  <Route path='/admin/clientes'>
-                    <Clientes/>
+                  <Route path="/admin/ventas">
+                    <Ventas />
                   </Route>
-                  <Route path='/admin'>
-                    <Admin/>
+                  <Route path="/admin">
+                    <Admin />
                   </Route>
                 </Switch>
               </PrivateLayout>
             </Route>
 
-
-            <Route path={['/login', '/registro']}>
+            <Route path={["/login", "/registro"]}>
               <AuthLayout>
                 <Switch>
-                  <Route path='/login'> 
-                    <Login/>
+                  <Route path="/login">
+                    <Login />
                   </Route>
-                  <Route path='/registro'>
-                    <Registro/>
+                  <Route path="/registro">
+                    <Registro />
                   </Route>
                 </Switch>
               </AuthLayout>
             </Route>
 
-            <Route path={['/']}>
+            <Route path={["/"]}>
               <PublicLayout>
-                <Switch>
-                  <Route path='/'>
-                    <Index/>
-                  </Route>
-                </Switch>
+                <Route path="/">
+                  <Index />
+                </Route>
               </PublicLayout>
             </Route>
-
           </Switch>
         </Router>
       </DarkModeContext.Provider>
-
     </div>
   );
 }
