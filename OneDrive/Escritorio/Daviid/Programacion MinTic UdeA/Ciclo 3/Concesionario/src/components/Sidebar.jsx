@@ -5,7 +5,7 @@ import useActiveRoute from "hooks/useActiveRoute";
 
 const Sidebar = () => {
   return (
-    <nav className="hidden md:flex md:w-72  border border-gray-500 h-full  flex-col bg-gray-300 p-4">
+    <nav className="hidden md:flex md:w-72  border border-gray-500 h-full  flex-col bg-purple-700 p-4">
       <Link to="/admin">
         <ImagenLogo />
       </Link>
@@ -21,7 +21,7 @@ const Sidebar = () => {
         <Ruta icono="fas fa-users" ruta="/admin/usuarios" nombre="Usuarios" />
       </div>
       <button
-        className={`p-1 my-2  bg-green-400 hover:bg-green-700 flex w-full items-center text-black  rounded-lg `}
+        className={`p-1 my-2  bg-green-200 hover:bg-green-500 flex w-full items-center text-black  rounded-lg `}
       >
         <i className={`fas fa-door-closed w-10`} />
         Cerrar Sesion

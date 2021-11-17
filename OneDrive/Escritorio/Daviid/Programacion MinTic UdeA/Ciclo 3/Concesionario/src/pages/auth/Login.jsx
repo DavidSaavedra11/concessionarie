@@ -86,11 +86,9 @@ const Login = () => {
         </form>
       </div>
       <div className="flex items-center justify-center">
-        <span className="mx-4">------------------------</span>
-        <h2 className="my-4 text-center text-sm font-extrabold text-gray-900">
-          O
-        </h2>
-        <span className="mx-4">------------------------</span>
+        <span className="mx-0">----------------------------</span>
+        <h2 className="my-4 text-center text-sm font-extrabold text-gray-900"></h2>
+        <span className="mx-0">----------------------------</span>
       </div>
       <div className="max-w-md w-full">
         <div>
